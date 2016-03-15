@@ -1,0 +1,45 @@
+package org.CAMP;
+
+import java.io.*;
+import java.util.*;
+
+/**
+ * This class will retrieve bitmaps that have been previously stored in a
+ * portable format (as lists of ints)
+ * 
+ * 
+ * @author Owen Kaser
+ */
+public class RealDataRetriever2 {
+
+        File directory;
+
+        public RealDataRetriever2(String dirName) {
+                directory = new File(dirName);
+                if (!directory.exists() || !directory.isDirectory())
+                        throw new RuntimeException("" + dirName
+                                + " is not a directory");
+        }
+
+        public int[] fetchBitPositions(int k, int num) {
+                File whichFile = new File(directory, k + "_" + num + ".csv");
+                ArrayList<Integer> l = new ArrayList<Integer>();
+                try {
+                        BufferedReader buf = new BufferedReader(new FileReader(
+                                whichFile));
+                        String oneLine = buf.readLine(); // a single, perhaps
+                                                         // very long, line
+                        if(oneLine != null)
+                        for (String entry : oneLine.split(","))
+                                l.add(Integer.parseInt(entry));
+                } catch (IOException e) {
+//                        throw new RuntimeException(e);
+                }
+
+                int[] ans = new int[l.size()];
+                int ctr = 0;
+                for (int val : l)
+                        ans[ctr++] = val;
+                return ans;
+        }
+}
